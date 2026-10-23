@@ -1,3 +1,4 @@
+import 'package:delivery/feature/home/data/model/food_model/food_model.dart';
 import 'package:delivery/feature/home/presentation/views/account_view/account_view.dart';
 import 'package:delivery/feature/home/presentation/views/order_history_view/order_history_view.dart';
 import 'package:delivery/feature/payment/presentation/view/checkout_view/checkout_view.dart';
@@ -24,18 +25,29 @@ class AppRouter {
       GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
       GoRoute(
         path: kDetailsView,
-        builder: (context, state) => const DetailsView(),
+        builder: (context, state) {
+        FoodModel  food = state.extra as FoodModel ;
+          return DetailsView( food: food,);
+        },
       ),
 
-      GoRoute(path: kCartView, builder: (context, state) => CartView()),
-      GoRoute(path: kCheckoutView, builder: (context, state) => CheckoutView()),
+      GoRoute(path: kCartView, builder: (context, state) => const CartView()),
+      GoRoute(
+        path: kCheckoutView,
+        builder: (context, state) => const CheckoutView(),
+      ),
       GoRoute(
         path: kNewAddressView,
-        builder: (context, state) => NewAddressView(),
+        builder: (context, state) => const NewAddressView(),
       ),
-      GoRoute(path: kAccountView, builder: (context, state) => AccountView()),
-    GoRoute(path: kOrderHistory,builder: (context,state)=>OrderHistoryView())
-    
+      GoRoute(
+        path: kAccountView,
+        builder: (context, state) => const AccountView(),
+      ),
+      GoRoute(
+        path: kOrderHistory,
+        builder: (context, state) => const OrderHistoryView(),
+      ),
     ],
   );
 }

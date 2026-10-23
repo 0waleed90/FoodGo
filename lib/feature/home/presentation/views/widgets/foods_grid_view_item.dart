@@ -12,11 +12,12 @@ class FoodsGridViewItem extends StatelessWidget {
   });
   final String imageUrl;
   final FoodModel foods;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).push(AppRouter.kDetailsView);
+        GoRouter.of(context).push(AppRouter.kDetailsView,extra:foods);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -59,7 +60,7 @@ class FoodsGridViewItem extends StatelessWidget {
                 overflow: .ellipsis,
               ),
               Text(
-               ( foods.instructions?[0] )??'',
+                (foods.instructions?[0]) ?? '',
                 style: Styles.textStyle16.copyWith(fontWeight: .normal),
                 maxLines: 1,
                 overflow: .ellipsis,

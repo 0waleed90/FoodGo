@@ -3,7 +3,12 @@ import 'package:delivery/core/utils/constants.dart';
 import 'package:delivery/core/utils/styles.dart';
 import 'package:delivery/core/utils/widgets/custom_button.dart';
 import 'package:delivery/core/utils/widgets/custom_text_field.dart';
+import 'package:delivery/feature/home/presentation/manger/food_cubit/food_cubit.dart';
+import 'package:delivery/feature/home/presentation/manger/food_cubit/food_state.dart';
+import 'package:delivery/feature/payment/presentation/manger/address_cubit/address_cubit.dart';
+import 'package:delivery/feature/payment/presentation/manger/address_cubit/address_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class CartBottomSheet extends StatelessWidget {
@@ -36,23 +41,36 @@ class CartBottomSheet extends StatelessWidget {
                 style: Styles.textStyle20.copyWith(color: kPrimaryColor),
               ),
               SizedBox(height: 20),
-              CustomTextField(
-                hintText: 'sdgfsg sdfsdg sd ',
-                readOnly: true,
-                onTap: () {
-                  GoRouter.of(context).push(AppRouter.kNewAddressView);
+              BlocBuilder<AddressCubit, AddressState>(
+                builder: (context, state) {
+                  if (state is AddressSuccess) {
+                    return CustomTextField(
+                      hintText: state.fullAddress,
+                      readOnly: true,
+                      onTap: () {
+                        GoRouter.of(context).push(AppRouter.kNewAddressView);
+                      },
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
                 },
               ),
               SizedBox(height: 20),
               Divider(height: 20, color: kPrimaryColor, thickness: 4),
               SizedBox(height: 10),
               Center(
-                child: Text(
-                  r'total : 99$',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 22),
+                child: BlocBuilder<FoodCubit, FoodState>(
+                  builder: (context, state) {
+                    return Text(
+                      'total : ${context.read<FoodCubit>().getTotalPriceOfCartItem()} \$',
+                      style: TextStyle(color: kPrimaryColor, fontSize: 22),
+                    );
+                  },
                 ),
               ),
               SizedBox(height: 10),
+
               Divider(height: 20, color: kPrimaryColor, thickness: 4),
               Expanded(child: SizedBox()),
               CustomButton(

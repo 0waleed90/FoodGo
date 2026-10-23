@@ -1,6 +1,9 @@
 import 'package:delivery/core/utils/constants.dart';
 import 'package:delivery/core/utils/widgets/custom_button.dart';
+import 'package:delivery/feature/home/presentation/manger/food_cubit/food_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../core/utils/styles.dart';
 import 'category_filter_bar.dart';
@@ -77,7 +80,10 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
               color: kPrimaryColor,
               textColor: Colors.white,
               width: double.infinity,
-              onTap: () {},
+              onTap: () {
+                context.read<FoodCubit>().priceFilter(_selectedMaxPrice.round());
+                GoRouter.of(context).pop();
+              },
             ),
           ],
         ),

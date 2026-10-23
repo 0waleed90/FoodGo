@@ -44,7 +44,7 @@ class _NewAddressViewState extends State<NewAddressView> {
         onPressed: () {
           showModalBottomSheet(
             context: (context),
-            builder: (context) =>CustomAddressBottomSheet(fullAddressText: addressText)
+            builder: (context) =>CustomAddressBottomSheet(fullAddress: addressText)
           );
         },
         child: const Icon(Icons.location_on),

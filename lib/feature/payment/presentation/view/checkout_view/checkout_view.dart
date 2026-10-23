@@ -1,16 +1,20 @@
 import 'package:delivery/core/utils/constants.dart';
 import 'package:delivery/core/utils/styles.dart';
 import 'package:delivery/core/utils/widgets/custom_button.dart';
+import 'package:delivery/feature/home/presentation/manger/food_cubit/food_cubit.dart';
 import 'package:delivery/feature/payment/presentation/view/checkout_view/payment_method_list_view.dart';
-import 'package:delivery/feature/payment/presentation/view/checkout_view/payment_method_list_view_item.dart';
 import 'package:delivery/feature/payment/presentation/view/checkout_view/price_detils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckoutView extends StatelessWidget {
   const CheckoutView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    num orderPrice =context.read<FoodCubit>().getTotalPriceOfCartItem();
+    double total = orderPrice-0.3-1.5;
+
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -21,7 +25,7 @@ class CheckoutView extends StatelessWidget {
             children: [
               Text('Order summary', style: Styles.textStyle20),
               Divider(height: 10, color: kPrimaryColor,thickness: 2,),
-              PriceDetails(leftText: 'Order', rightText: r'14 $'),
+              PriceDetails(leftText: 'Order', rightText: '$orderPrice \$'),
         
               PriceDetails(leftText: 'Taxes', rightText: r'0.3 $'),
               PriceDetails(leftText: 'Delivery fees', rightText: r'1.5 $'),
@@ -32,7 +36,7 @@ class CheckoutView extends StatelessWidget {
         
                 children: [
                   Text('total', style: Styles.textStyle20),
-                  Text(r'13.13 $', style: Styles.textStyle20),
+                  Text('$total \$', style: Styles.textStyle20),
                 ],
               ),
               SizedBox(height: 20),
@@ -57,7 +61,7 @@ class CheckoutView extends StatelessWidget {
                       Text('Total price', style: Styles.textStyle16),
         
                       Text(
-                        r'19.19 $',
+                        '$total \$',
                         style: TextStyle(fontSize: 32, fontWeight: .w600),
                       ),
                     ],

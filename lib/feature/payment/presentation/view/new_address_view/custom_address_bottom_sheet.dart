@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/utils/styles.dart';
 import '../../../../../core/utils/widgets/custom_button.dart';
 import '../../../../../core/utils/widgets/custom_text_field.dart';
-
+import '../../manger/address_cubit/address_cubit.dart';
 
 class CustomAddressBottomSheet extends StatelessWidget {
-  const CustomAddressBottomSheet({super.key, required this.fullAddressText});
-  final String fullAddressText;
+  const CustomAddressBottomSheet({super.key, required this.fullAddress});
+  final String fullAddress;
   @override
   Widget build(BuildContext context) {
     String addressNickName = 'Home';
@@ -52,7 +53,7 @@ class CustomAddressBottomSheet extends StatelessWidget {
               style: Styles.textStyle20.copyWith(fontWeight: .w400),
             ),
             const SizedBox(height: 10),
-            CustomTextField(hintText: fullAddressText, readOnly: true),
+            CustomTextField(hintText: fullAddress, readOnly: true),
             const Spacer(),
             CustomButton(
               text: 'Add',
@@ -60,7 +61,10 @@ class CustomAddressBottomSheet extends StatelessWidget {
               textColor: Colors.white,
               width: 500,
               onTap: () {
-
+                context.read<AddressCubit>().addNewAddress(
+                  addressNickName,
+                  fullAddress,
+                );
 
                 GoRouter.of(context).pop();
                 GoRouter.of(context).pop();

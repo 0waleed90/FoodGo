@@ -1,12 +1,15 @@
 import 'package:delivery/core/utils/app_router.dart';
 import 'package:delivery/core/utils/constants.dart';
 import 'package:delivery/core/utils/styles.dart';
+import 'package:delivery/feature/home/data/model/food_model/food_model.dart';
+import 'package:delivery/feature/home/presentation/manger/food_cubit/food_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class DetailsView extends StatelessWidget {
-  const DetailsView({super.key});
-
+  const DetailsView({super.key, required this.food});
+  final FoodModel food;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,11 +34,11 @@ class DetailsView extends StatelessWidget {
               Center(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.33,
-                  child: Image.asset('assets/photos/burger.png', fit: .contain),
+                  child: Image.network(food.image, fit: .contain),
                 ),
               ),
               SizedBox(height: 12),
-              Text('Hamburger Veggie Burger', style: Styles.textStyle24),
+              Text(food.name, style: Styles.textStyle24),
               SizedBox(height: 12),
 
               Row(
@@ -43,14 +46,14 @@ class DetailsView extends StatelessWidget {
                   Icon(Icons.star, color: Color(0xffFC9432)),
                   SizedBox(width: 10),
                   Text(
-                    '4.8 -  14 mins',
+                    '${food.rating} -  ${food.reviewCount}',
                     style: Styles.textStyle16.copyWith(fontWeight: .w500),
                   ),
                 ],
               ),
               SizedBox(height: 12),
               Text(
-                'Enjoy our delicious Hamburger Veggie Burger, made with a savory blend of fresh vegetables and herbs, topped with crisp lettuce, juicy tomatoes, and tangy pickles, all served on a soft, toasted bun. ',
+                food.instructions.toString(),
                 style: Styles.textStyle16.copyWith(fontWeight: .w400),
               ),
               Spacer(),
@@ -73,32 +76,45 @@ class DetailsView extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        r'$ 99.99',
+                       '${food.price} \$',
                         style: Styles.textStyle24.copyWith(color: Colors.white),
                       ),
                     ),
                   ),
                   SizedBox(width: 20),
                   Expanded(
-                    child: Container(
-                      height: 70,
+                    child: GestureDetector(
+                      onTap: () {
+                        context.read<FoodCubit>().addToCart(
+                          food.id,
+                          food.name,
+                          food.image,
+                          food.rating,
+                          food.price,
+                          food.reviewCount,
+                          food.instructions??[],
+                        );
+                      },
+                      child: Container(
+                        height: 70,
 
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            blurStyle: .outer,
-                            blurRadius: 7,
-                            color: Colors.black26,
-                          ),
-                        ],
-                        borderRadius: .circular(20),
-                        color: Color(0xff3C2F2F),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Add to cart',
-                          style: Styles.textStyle24.copyWith(
-                            color: Colors.white,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              blurStyle: .outer,
+                              blurRadius: 7,
+                              color: Colors.black26,
+                            ),
+                          ],
+                          borderRadius: .circular(20),
+                          color: Color(0xff3C2F2F),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Add to cart',
+                            style: Styles.textStyle24.copyWith(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),

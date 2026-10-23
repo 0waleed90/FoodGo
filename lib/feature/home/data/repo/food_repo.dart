@@ -5,5 +5,6 @@ import 'package:delivery/feature/home/data/model/food_model/food_model.dart';
 abstract class FoodRepo {
 Future<Either<Failures,List<FoodModel>>> fetchFoods();
 Future<Either<Failures,List<String>>> fetchAllCategory();
-
+Future<Either<Failures,List<FoodModel>>> fetchFoodByCategory(String category);
+Future<Either<Failures, List<FoodModel>>> foodSearch(String query);
 }

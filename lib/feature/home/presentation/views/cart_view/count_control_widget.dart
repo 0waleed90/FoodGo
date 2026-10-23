@@ -1,32 +1,47 @@
 import 'package:delivery/core/utils/constants.dart';
+import 'package:delivery/feature/home/presentation/manger/food_cubit/food_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/utils/styles.dart';
+import '../../manger/food_cubit/food_state.dart';
 
 class CountControlWidget extends StatelessWidget {
   const CountControlWidget({
     super.key,
     required this.index,
-    required this.cartItemCount,
+    required this.cartItemCount, required this.id,
   });
   final int index;
   final int cartItemCount;
-
+final int id;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        operator('-', () {}),
-        const SizedBox(width: 10),
-        Text(
-          cartItemCount.toString(),
-          style: Styles.textStyle14.copyWith(color: kPrimaryColor),
-        ),
-        const SizedBox(width: 10),
-        operator('+', () {}),
-        const SizedBox(width: 10),
-      ],
+    return BlocBuilder<FoodCubit, FoodState>(
+      builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            operator('-', () {
+              context.read<FoodCubit>().decreaseCartItemCount(index);
+            }),
+            const SizedBox(width: 10),
+            Text(
+              cartItemCount.toString(),
+              style: Styles.textStyle14.copyWith(color: kPrimaryColor),
+            ),
+            const SizedBox(width: 10),
+            operator('+', () {
+              context.read<FoodCubit>().increaseCartItemCount(index);
+            }),
+            const SizedBox(width: 10),
+            IconButton(
+              onPressed: () {context.read<FoodCubit>().removeFromCart(id);},
+              icon: Icon(Icons.delete, color: Colors.red, size: 28),
+            ),
+          ],
+        );
+      },
     );
   }
 
